@@ -9,77 +9,88 @@ public class MergeSort {
 
 	public static void main(String[] args) {
 		
-		ArrayBag<Integer> a1 = new ArrayBag<>(100000);
-		ArrayBag<Integer> a2 = new ArrayBag<>(100000);
+		ArrayBag<Integer> a1 = new ArrayBag<>(1000);
+		ArrayBag<Integer> a2 = new ArrayBag<>(1000);
 
 		Random r = new Random();
-		int[] array =new int[100000];
+		int[] array =new int[1000];
 		
-		/*
-		System.out.println("random integers: ");
+		
 		for(int i = 0; i < array.length; i++) {
 			array[i] = r.nextInt(500);
 			a1.add(array[i]);
 		}
 		System.out.println("mergeSortByIteration: ");
-		array = mergeSortByIteration(array);
+		mergeSortByIteration(array);
 		for(int i = 0; i < array.length; i++) {
 			a2.add(array[i]);
 		}
+		boolean pass = true;
 		for(int i = 0; i < array.length - 1; i++) {
 			if(array[i] > array[i + 1]) {
 				System.out.println("*****Failed");
+				pass = false;
 				break;
 			}
 		}
 		
-		System.out.println(a1.equals(a2));
-		
+		if(a1.equals(a2) && pass) {
+			System.out.println("Sorted.");
+		}
+		System.out.println();
 		a1.clear();
 		a2.clear();
 		
-		*/
-		System.out.println("random integers: ");
+		
 		for(int i = 0; i < array.length; i++) {
-			array[i] = r.nextInt(50);
+			array[i] = r.nextInt(100000);
 			a1.add(array[i]);
 		}
 		
 		System.out.println("mergeSortByRecursion: ");
 		mergeSortByRecursion(array);
+		
 		for(int i = 0; i < array.length; i++) {
 			a2.add(array[i]);
 		}
+		pass = true;
 		for(int i = 0; i < array.length - 1; i++) {
 			if(array[i] > array[i + 1]) {
 				System.out.println("*****Failed");
+				pass = false;
 				break;
 			}
 		}
-		System.out.println(a1.equals(a2));
+		
+		if(a1.equals(a2) && pass) {
+			System.out.println("Sorted.");
+		}
 	}
 	
-	public static int[] mergeSortByIteration(int[] array) {
+	public static void mergeSortByIteration(int[] array) {
 
-		int mid = array.length / 2;
-		sort(array, 0, mid);
-		sort(array, mid + 1, array.length-1);			
+		int mid;
+		int firstIndex = 0;
+		int lastIndex = array.length - 1;
 		tempArray = new int[array.length];
-		sortMergeParts(array, 0, array.length - 1);
-		return array;
-		
-		
+		int range = 1;
+		while(range < array.length) {
+			while(firstIndex < array.length - range) {
+				mid = range + firstIndex - 1;
+				if(lastIndex < firstIndex + range * 2 -1) {
+					combineMergeParts(array, firstIndex, lastIndex, mid);
+				}
+				else {
+					combineMergeParts(array, firstIndex, firstIndex + range * 2 -1, mid);
+				}
+				firstIndex += range * 2;
+			}
+			firstIndex = 0;
+			range *= 2;
+		}
+
 	}//end mergeSortByIteration
 	
-	private static void sort (int[] array, int first, int last) {
-		for (int i = first; i <= last; i++) {
-			int j = i;
-			while((j > first) && (array[j] < array[j-1])) {
-				swarp(array, j, j-1);
-				j--;
-			}//end while
-		}//end for
-	}//end sort
 
 	public static void mergeSortByRecursion(int[] array) {
 		tempArray = new int[array.length];
@@ -98,15 +109,14 @@ public class MergeSort {
 			int mid = (firstIndex + lastIndex) / 2;
 			merge(array, firstIndex, mid);
 			merge(array, mid + 1, lastIndex);	
-			sortMergeParts(array,firstIndex, lastIndex);
+			combineMergeParts(array,firstIndex, lastIndex, mid);
 		}
 		
 		
 	}//end merge
 	
-	private static void sortMergeParts(int[] array, int firstIndex, int lastIndex) {
+	private static void combineMergeParts(int[] array, int firstIndex, int lastIndex, int mid) {
 
-		int mid = (firstIndex + lastIndex) / 2;
 		int index = firstIndex;
 		int pointer1 = firstIndex;
 		int pointer2 = mid + 1;
@@ -139,11 +149,12 @@ public class MergeSort {
 		for(int i = firstIndex; i <= lastIndex; i++) {
 			array[i] = tempArray[i];
 		}
-	}
+	}// end combineMergeParts
 	
 	private static void swarp(int[] array, int firstIndex, int lastIndex) {
 		int temp = array[firstIndex];
 		array[firstIndex] = array[lastIndex];
 		array[lastIndex] = temp;
 	}
+	
 }
