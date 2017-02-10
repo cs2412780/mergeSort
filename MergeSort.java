@@ -67,6 +67,11 @@ public class MergeSort {
 		}
 	}
 	
+	
+	/**
+	 * a function that uses iterative merge sort to sort an array.
+	 * @param array The array that to be sorted
+	 */
 	public static void mergeSortByIteration(int[] array) {
 
 		int mid;
@@ -92,12 +97,22 @@ public class MergeSort {
 	}//end mergeSortByIteration
 	
 
+	/**
+	 * a function that uses recursive merge sort to sort an array.
+	 * @param array The array that to be sorted
+	 */
 	public static void mergeSortByRecursion(int[] array) {
 		tempArray = new int[array.length];
 		merge(array, 0, array.length - 1);
 		
 	}
 	
+	/**
+	 * break a partial array into half
+	 * @param array the target array
+	 * @param firstIndex the starting point
+	 * @param lastIndex the end point
+	 */
 	public static void merge(int[] array, int firstIndex, int lastIndex) {
 		
 		if(lastIndex - firstIndex == 1) {
@@ -115,6 +130,14 @@ public class MergeSort {
 		
 	}//end merge
 	
+	
+	/**
+	 * a function that uses merge sort to sort two sorted partial arrays of an array.
+	 * @param array the target array
+	 * @param firstIndex the index of the first element in the left-side array
+	 * @param lastIndex the index of the first element in the right-side array
+	 * @param mid the boundary of the two arrays.
+	 */
 	private static void combineMergeParts(int[] array, int firstIndex, int lastIndex, int mid) {
 
 		int index = firstIndex;
@@ -151,6 +174,13 @@ public class MergeSort {
 		}
 	}// end combineMergeParts
 	
+	
+	/**
+	 * swap two entries.
+	 * @param array the target array
+	 * @param first Index of an entry
+	 * @param last Index Of another entry
+	 */
 	private static void swarp(int[] array, int firstIndex, int lastIndex) {
 		int temp = array[firstIndex];
 		array[firstIndex] = array[lastIndex];
